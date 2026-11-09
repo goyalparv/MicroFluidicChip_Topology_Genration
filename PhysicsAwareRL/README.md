@@ -110,7 +110,7 @@ Every run with `run_stage1_v2.py` outputs into `--out`:
 
 ## 4. Key Metrics Reference
 
-- `score`: $E\_{\text{score}} = \text{reward} - \text{struct\_cost}$. Main ranking objective.
+- `score`: $E_{\text{score}} = \text{reward} - \text{struct\_cost}$. Main ranking objective.
 - `n_min`: Minimum number of tiles required to close the chip specification (17 for default 8x8 1-in-3-out spec).
 - `p_ref`: Inlet pressure of the minimum 17-tile reference design solved with baseline resistance variants.
 - `extra`: Number of tiles placed beyond $n_{\text{min}}$ (`max(0, n_tiles - n_min)`).
