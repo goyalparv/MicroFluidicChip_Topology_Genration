@@ -1,6 +1,6 @@
-# Physics-Aware Reinforcement Learning for Microfluidic Flow-Distributor Synthesis
+# Physics-Aware Reinforcement Learning for Microfluidic Topology Synthesis
 
-An automated end-to-end computational framework that synthesizes discrete tile-based microfluidic chips to achieve precise target outlet flow ratios under Stokes flow. The framework combines a **verified 1D nodal hydraulic circuit solver**, **finite-element COMSOL Multiphysics calibration**, and **physics-aware Proximal Policy Optimization (PPO)** with strict topological closure guarantees.
+An automated end-to-end computational framework that synthesizes discrete tile-based microfluidic chips to achieve precise target outlet flow ratios under Stokes flow. The framework combines a **verified nodal hydraulic circuit solver**, **finite-element COMSOL Multiphysics calibration**, and **physics-aware Proximal Policy Optimization (PPO)** with strict topological closure guarantees.
 
 ---
 
@@ -199,9 +199,3 @@ or run the main test plan directly:
 ```bash
 python -m unittest PhysicsAwareRL.tests.test_fix_plan
 ```
-
----
-
-## 📄 License
-
-This project is licensed under the [MIT License](LICENSE).
