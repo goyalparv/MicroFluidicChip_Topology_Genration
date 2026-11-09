@@ -110,13 +110,23 @@ Every run with `run_stage1_v2.py` outputs into `--out`:
 
 ## 4. Key Metrics Reference
 
-- `score`: $E_{\text{score}} = \text{reward} - \text{struct\_cost}$. Main ranking objective.
-- `n_min`: Minimum number of tiles required to close the chip specification (17 for default 8x8 1-in-3-out spec).
+- `score`: \(E_{\text{score}} = \text{reward} - \text{struct\_cost}\). Main ranking objective.
+- `n_min`: Minimum number of tiles required to close the chip specification (17 for the default 8×8, 1-in-3-out specification).
 - `p_ref`: Inlet pressure of the minimum 17-tile reference design solved with baseline resistance variants.
-- `extra`: Number of tiles placed beyond $n_{\text{min}}$ (`max(0, n_tiles - n_min)`).
-- `loops`: Cycle rank ($E - V + C$) of the placed tile network graph.
-- `merges`: Number of tiles where 2 or more incoming fluid flows meet.
-- `p_ratio`: Realized inlet pressure divided by $p_{\text{ref}}$.
-- `struct_cost`: $\lambda\_{\text{extra}} \cdot \text{extra\_n} + \lambda\_{\text{pressure}} \cdot \text{press\_n} + \lambda\_{\text{loops}} \cdot \text{loops\_n}$. Applied exactly once at episode termination.
-- `topo_id`: 12-character SHA-1 hash of the graph topology (cells and port connection directions, invariant to resistance variant choices and dictionary order).
+- `extra`: Number of tiles placed beyond \(n_{\min}\), calculated as `max(0, n_tiles - n_min)`.
+- `loops`: Cycle rank of the placed tile network graph, calculated as \(E - V + C\).
+- `merges`: Number of tiles where two or more incoming fluid flows meet.
+- `p_ratio`: Realized inlet pressure divided by \(p_{\text{ref}}\).
+- `struct_cost`: Structural penalty calculated as:
+
+$$
+\text{struct\_cost} =
+\lambda_{\text{extra}} \cdot \text{extra\_n}
++ \lambda_{\text{pressure}} \cdot \text{press\_n}
++ \lambda_{\text{loops}} \cdot \text{loops\_n}
+$$
+
+  Applied exactly once at episode termination.
+
+- `topo_id`: 12-character SHA-1 hash of the graph topology (cells and port connection directions), invariant to resistance variant choices and dictionary order.
 - `design_id`: 12-character SHA-1 hash of the exact physical chip design (including specific resistance variants).
