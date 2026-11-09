@@ -10,23 +10,23 @@ The project is structured into three self-contained, interconnected stages:
 
 ```
 +---------------------------------------------------------------------------------------+
-|  PHASE 1: Solver Verification (solver_verification_v2)                                |
-|  • 17x17 Nodal Circuit Resistor Network Solver (hydraulic_solver_v2.py)               |
+|  PHASE 1: Solver Verification (solver_verification)                                   |
+|  • 17x17 Nodal Circuit Resistor Network Solver (hydraulic_solver.py)                  |
 |  • Automated Monte Carlo benchmarking against 2D Navier-Stokes FEM (COMSOL 6.x)       |
 |  • Validates < 1.5% hydrodynamic relative error across arbitrary random topologies   |
 +---------------------------------------------------------------------------------------+
                                            │
                                            ▼
 +---------------------------------------------------------------------------------------+
-|  PHASE 2: Tile Library Generation (PhysicsAwareRL_v3/comsol)                           |
+|  PHASE 2: Tile Library Generation (PhysicsAwareRL/comsol)                              |
 |  • Discrete tile geometries (25x25 rasters, 100 µm channel width) across 50 combos    |
 |  • Serpentine meander paths with varying resistance ratios                            |
-|  • Parametric COMSOL Java API automation (FlowJob.java & measure_v2.py)               |
+|  • Parametric COMSOL Java API automation (FlowJob.java & measure.py)                  |
 +---------------------------------------------------------------------------------------+
                                            │
                                            ▼
 +---------------------------------------------------------------------------------------+
-|  PHASE 3: Physics-Aware RL Synthesis & Validation (PhysicsAwareRL_v3)                 |
+|  PHASE 3: Physics-Aware RL Synthesis & Validation (PhysicsAwareRL)                    |
 |  • PPO Agent with Breadth-First-Search topological closure oracle                     |
 |  • Multi-objective structural presets: 'compact', 'tree', and 'low-pressure'         |
 |  • 20-Target independent batch automation (run_batch.py)                              |
@@ -50,44 +50,44 @@ Microfluidic-Physics-Aware-RL/
 │   ├── fix_plan.md                 # Detailed structural objective & diversity plan
 │   └── Closed-Topology Enforcement Implementation Plan.md
 │
-├── solver_verification_v2/         # PHASE 1: Standalone solver validation against COMSOL
-│   ├── ChipProcessor_v2.java       # COMSOL Java driver building 2D geometry & solving spf
-│   ├── auto_pipeline_v2.py         # Master Monte Carlo comparison across N random chips
-│   ├── hydraulic_solver_v2.py      # Standalone 17x17 nodal hydraulic circuit solver
-│   ├── random_chip_v2.py           # Generates connected 8x8 tile chip network topologies
-│   ├── solver_wrapper_v2.py        # Interface executing hydraulic circuit simulation
+├── solver_verification/            # PHASE 1: Standalone solver validation against COMSOL
+│   ├── ChipProcessor.java          # COMSOL Java driver building 2D geometry & solving spf
+│   ├── auto_pipeline.py            # Master Monte Carlo comparison across N random chips
+│   ├── hydraulic_solver.py         # Standalone 17x17 nodal hydraulic circuit solver
+│   ├── random_chip.py              # Generates connected 8x8 tile chip network topologies
+│   ├── solver_wrapper.py           # Interface executing hydraulic circuit simulation
 │   ├── README.md                   # Detailed solver verification guide
 │   └── __init__.py
 │
-└── PhysicsAwareRL_v3/              # PHASES 2 & 3: Tile Library, RL Synthesis, Validation
+└── PhysicsAwareRL/                 # PHASES 2 & 3: Tile Library, RL Synthesis, Validation
     ├── comsol/                     # Phase 2: COMSOL FEM tile characterization
     │   ├── FlowJob.java            # COMSOL Java worker evaluating tile flow resistance
-    │   ├── measure_v2.py           # Automated tile raster measurement pipeline
+    │   ├── measure.py              # Automated tile raster measurement pipeline
     │   ├── runner.py               # Subprocess runner & flow problem abstractions
     │   └── __init__.py
     ├── tests/                      # Automated test suite (all 13 unittests)
     │   ├── test_fix_plan.py        # Core regression test suite (T1 - T13)
-    │   ├── test_closure_v2.py      # Closure oracle tests
+    │   ├── test_closure.py         # Closure oracle tests
     │   ├── test_curriculum_plan.py # Curriculum learning tests
-    │   ├── test_improvements_v2.py # RL policy advantage normalization tests
-    │   ├── test_pipeline_v2.py     # Pipeline integration tests
+    │   ├── test_improvements.py    # RL policy advantage normalization tests
+    │   ├── test_pipeline.py        # Pipeline integration tests
     │   └── __init__.py
     ├── tools/                      # Analytical reference & comparison tools
     │   ├── reference_optimum.py    # Analytical DP solver for monotone flow routes
     │   ├── compare_designs.py      # Design & topology Jaccard distance calculator
     │   └── __init__.py
-    ├── agent_v2.py                 # Neural network policy & value networks
-    ├── closure_v2.py               # BFS-based closure oracle guaranteeing leak-free chips
-    ├── config_v2.py                # Hyperparameters, physical constants, & reward presets
-    ├── curriculum_v2.py            # Staged curriculum training manager
-    ├── environment_v2.py           # Microfluidic grid RL environment (8x8 tiles)
-    ├── hydraulic_solver_v2.py      # High-performance sparse nodal solver (solve_network_v2)
-    ├── library_v2.py               # Tile library loader & serpentine path generator
-    ├── metrics_v2.py               # Topology hash (topo_id), design_id, cycles & merge count
-    ├── reward_v2.py                # Relative flow error EQ + structural penalty evaluator
+    ├── agent.py                    # Neural network policy & value networks
+    ├── closure.py                  # BFS-based closure oracle guaranteeing leak-free chips
+    ├── config.py                   # Hyperparameters, physical constants, & reward presets
+    ├── curriculum.py               # Staged curriculum training manager
+    ├── environment.py              # Microfluidic grid RL environment (8x8 tiles)
+    ├── hydraulic_solver.py         # High-performance sparse nodal solver (solve_network)
+    ├── library.py                  # Tile library loader & serpentine path generator
+    ├── metrics.py                  # Topology hash (topo_id), design_id, cycles & merge count
+    ├── reward.py                   # Relative flow error EQ + structural penalty evaluator
     ├── run_batch.py                # 20-target automated sequential batch runner
-    ├── run_stage1_v2.py            # Primary CLI entry point for Stage 1 RL synthesis
-    ├── train_v2.py                 # Physics-aware GAE-PPO training algorithm
+    ├── run_stage1.py               # Primary CLI entry point for Stage 1 RL synthesis
+    ├── train.py                    # Physics-aware GAE-PPO training algorithm
     ├── validate_design.py          # Post-RL COMSOL validation (raster assembly & FEM solve)
     ├── visualize_stage1.py         # Standalone learning curves & chip layout visualizer
     ├── README.md
@@ -119,10 +119,10 @@ Verify that the fast 1D nodal circuit solver matches COMSOL Multiphysics 2D lami
 
 ```bash
 # A. Quick dry-run test (no COMSOL required):
-python -m solver_verification_v2.auto_pipeline_v2 --backend mock --runs 5 --output_dir results/test_solver
+python -m solver_verification.auto_pipeline --backend mock --runs 5 --output_dir results/test_solver
 
 # B. Real COMSOL Multiphysics verification (on COMSOL workstation):
-python -m solver_verification_v2.auto_pipeline_v2 --backend comsol --runs 10 --comsol_plugins "C:/Program Files/COMSOL/COMSOL62/Multiphysics/plugins" --output_dir verification_results_v2
+python -m solver_verification.auto_pipeline --backend comsol --runs 10 --comsol_plugins "C:/Program Files/COMSOL/COMSOL62/Multiphysics/plugins" --output_dir verification_results
 ```
 
 ---
@@ -131,7 +131,7 @@ python -m solver_verification_v2.auto_pipeline_v2 --backend comsol --runs 10 --c
 Measure discrete tile geometries with serpentine channel paths to build the physical resistance lookup table (`library.csv`):
 
 ```bash
-python -m PhysicsAwareRL_v3.comsol.measure_v2 --comsol-plugins "C:/Program Files/COMSOL/COMSOL62/Multiphysics/plugins" --out-dir results/library
+python -m PhysicsAwareRL.comsol.measure --comsol-plugins "C:/Program Files/COMSOL/COMSOL62/Multiphysics/plugins" --out-dir results/library
 ```
 *(If no custom library is provided, the RL pipeline automatically synthesizes a calibrated unitless baseline library of 640 tile variants across 50 active port configurations).*
 
@@ -143,7 +143,7 @@ python -m PhysicsAwareRL_v3.comsol.measure_v2 --comsol-plugins "C:/Program Files
 Synthesize an $8 \times 8$ microfluidic chip for specific outlet flow ratios (e.g., $Q_1 : Q_2 : Q_3 = 0.50 : 0.30 : 0.20$):
 
 ```bash
-python -m PhysicsAwareRL_v3.run_stage1_v2 \
+python -m PhysicsAwareRL.run_stage1 \
     --targets 0.5 0.3 0.2 \
     --episodes 2000 \
     --batch 16 \
@@ -162,10 +162,10 @@ Execute 20 independent target specifications sequentially from scratch. Results 
 
 ```bash
 # Run all 20 targets sequentially:
-python -m PhysicsAwareRL_v3.run_batch --episodes 2000 --batch 16 --out-dir results/batch_20_targets
+python -m PhysicsAwareRL.run_batch --episodes 2000 --batch 16 --out-dir results/batch_20_targets
 
 # Run specific target indices (e.g., Target 1, 2, and 3):
-python -m PhysicsAwareRL_v3.run_batch --indices 1 2 3 --episodes 2000 --batch 16 --out-dir results/batch_test
+python -m PhysicsAwareRL.run_batch --indices 1 2 3 --episodes 2000 --batch 16 --out-dir results/batch_test
 ```
 
 ---
@@ -193,11 +193,11 @@ For each run, the pipeline writes a comprehensive set of diagnostic and design o
 Run the full suite of regression unit tests to verify algorithmic correctness (closure oracle, curriculum manager, entropy scheduling, DP reference optimum, reward presets):
 
 ```bash
-python -m unittest discover PhysicsAwareRL_v3/tests
+python -m unittest discover PhysicsAwareRL/tests
 ```
 or run the main test plan directly:
 ```bash
-python -m unittest PhysicsAwareRL_v3.tests.test_fix_plan
+python -m unittest PhysicsAwareRL.tests.test_fix_plan
 ```
 
 ---
