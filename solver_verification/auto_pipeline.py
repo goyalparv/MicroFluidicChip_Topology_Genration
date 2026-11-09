@@ -95,9 +95,9 @@ def run_java_comsol(run_dir: str, plugins_path: str = COMSOL_API_PATH, bin_path:
         print("---------------------------------\n")
 
         if "Final Outlet Velocities" not in java_output:
-            print("[Pipeline v2] Unexpected COMSOL output:\n" + java_output[:800] + "...")
+            print("[Pipeline] Unexpected COMSOL output:\n" + java_output[:800] + "...")
     except subprocess.CalledProcessError as e:
-        print(f"[Pipeline v2] COMSOL Execution Error: {e}")
+        print(f"[Pipeline] COMSOL Execution Error: {e}")
         if e.stderr:
             print(f"--- Java Error Traceback ---\n{e.stderr}")
         return None
@@ -115,7 +115,7 @@ def run_java_comsol(run_dir: str, plugins_path: str = COMSOL_API_PATH, bin_path:
         v1, v2, v3 = float(match.group(1)), float(match.group(2)), float(match.group(3))
         return [v1, v2, v3]
     else:
-        print("[Pipeline v2] Failed to parse velocities from COMSOL output.")
+        print("[Pipeline] Failed to parse velocities from COMSOL output.")
         return None
 
 
@@ -174,7 +174,7 @@ def run_single_iteration(
     pressures, python_flows = simulate_chip(layout_path, ratio_path)
 
     if not python_flows:
-        print("[Pipeline v2] Python solver failed (disconnected chip). Skipping.")
+        print("[Pipeline] Python solver failed (disconnected chip). Skipping.")
         return None, None, None
 
     print(f"  -> Python Solver Flows [O1, O2, O3]: {python_flows[0]:.6f}, {python_flows[1]:.6f}, {python_flows[2]:.6f}")
@@ -187,7 +187,7 @@ def run_single_iteration(
         print("  [Mock] Generated synthetic finite-element Stokes flow.")
 
     if not comsol_flows:
-        print("[Pipeline v2] COMSOL simulation failed or returned invalid data.")
+        print("[Pipeline] COMSOL simulation failed or returned invalid data.")
         return None, None, None
 
     print(f"  -> COMSOL Outlet Flows [O1, O2, O3]: {comsol_flows[0]:.6f}, {comsol_flows[1]:.6f}, {comsol_flows[2]:.6f}")
@@ -203,13 +203,13 @@ def run_single_iteration(
 
 
 def main():
-    parser = argparse.ArgumentParser(description="Stage 1 Hydraulic Solver v2 Verification Pipeline")
+    parser = argparse.ArgumentParser(description="Stage 1 Hydraulic Solver Verification Pipeline")
     parser.add_argument("--runs", type=int, default=1, help="Number of random chips to test")
     parser.add_argument("--backend", choices=["comsol", "mock"], default="comsol",
                         help="'comsol' = execute real COMSOL simulation; 'mock' = test run without COMSOL")
     parser.add_argument("--comsol_plugins", type=str, default=COMSOL_API_PATH,
                         help="Path to COMSOL Multiphysics plugins folder")
-    parser.add_argument("--output_dir", type=str, default="verification_results_v2",
+    parser.add_argument("--output_dir", type=str, default="verification_results",
                         help="Output directory for logs, CSV, and error plots")
     parser.add_argument("--random_ratios", action="store_true",
                         help="Randomize outlet stub resistance ratios")
@@ -289,7 +289,7 @@ def main():
             plt.figure(figsize=(9, 5), dpi=150)
             plt.plot(iterations, l1_vals, marker="o", label="L1 Error (m/s)", color="#0d6efd")
             plt.plot(iterations, linf_vals, marker="x", label="L-Inf Error (m/s)", color="#dc3545")
-            plt.title("Hydraulic Solver v2 vs COMSOL Error Across Runs", fontsize=11, fontweight="bold")
+            plt.title("Hydraulic Solver vs COMSOL Error Across Runs", fontsize=11, fontweight="bold")
             plt.xlabel("Iteration (Chip ID)")
             plt.ylabel("Absolute Flow Error (m/s)")
             plt.legend()
