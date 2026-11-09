@@ -117,16 +117,6 @@ Every run with `run_stage1_v2.py` outputs into `--out`:
 - `loops`: Cycle rank of the placed tile network graph, calculated as \(E - V + C\).
 - `merges`: Number of tiles where two or more incoming fluid flows meet.
 - `p_ratio`: Realized inlet pressure divided by \(p_{\text{ref}}\).
-- `struct_cost`: Structural penalty calculated as:
-
-$$
-\text{struct\_cost} =
-\lambda_{\text{extra}} \cdot \text{extra\_n}
-+ \lambda_{\text{pressure}} \cdot \text{press\_n}
-+ \lambda_{\text{loops}} \cdot \text{loops\_n}
-$$
-
-  Applied exactly once at episode termination.
-
+- `struct_cost`: Structural penalty calculated as: \(\text{struct\_cost} = \lambda_{\text{extra}} \cdot \text{extra\_n} + \lambda_{\text{pressure}} \cdot \text{press\_n} + \lambda_{\text{loops}} \cdot \text{loops\_n}\) Applied exactly once at episode termination.
 - `topo_id`: 12-character SHA-1 hash of the graph topology (cells and port connection directions), invariant to resistance variant choices and dictionary order.
 - `design_id`: 12-character SHA-1 hash of the exact physical chip design (including specific resistance variants).
